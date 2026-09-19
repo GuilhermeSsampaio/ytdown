@@ -1,0 +1,13 @@
+:root { font-family: Inter, system-ui, sans-serif; color: #f6f7fb; background: #10111a; }
+* { box-sizing: border-box; }
+body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at top, #2a2050, #10111a 55%); }
+.card { width: min(100%, 620px); padding: 42px; background: #1b1d2a; border: 1px solid #383b51; border-radius: 20px; box-shadow: 0 20px 70px #0007; }
+.brand { font-weight: 800; color: #ff5b67; letter-spacing: .4px; } .brand span { display: inline-grid; place-items: center; width: 26px; height: 22px; color: white; background: #ff4655; border-radius: 6px; font-size: 12px; }
+h1 { margin: 22px 0 6px; font-size: clamp(1.8rem, 5vw, 2.5rem); } .subtitle, .notice, #author { color: #aeb2c7; }
+label { display: block; margin: 26px 0 8px; font-size: .9rem; font-weight: 650; }
+.input-row { display: flex; gap: 10px; } input, select, button { font: inherit; border-radius: 10px; }
+input, select { width: 100%; padding: 13px 14px; color: #f6f7fb; background: #12131c; border: 1px solid #454963; } input:focus, select:focus { outline: 2px solid #8a70ff; border-color: transparent; }
+button { border: 0; padding: 13px 20px; color: white; background: #6e55df; cursor: pointer; font-weight: 700; white-space: nowrap; } button:hover { background: #8069ed; } button:disabled { opacity: .6; cursor: wait; }
+#result { margin-top: 28px; } .video-info { display: flex; gap: 14px; align-items: center; padding: 14px; background: #242638; border-radius: 12px; } .video-info img { width: 116px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 7px; } h2 { font-size: 1rem; margin: 0; } #author { margin: 6px 0 0; font-size: .88rem; }
+.download { width: 100%; margin-top: 14px; background: #ff4655; } .download:hover { background: #ff5b67; } .message { min-height: 1.4em; color: #ff9ca4; margin: 18px 0 0; } .message.ok { color: #85e7b1; } .notice { margin: 32px 0 0; font-size: .75rem; text-align: center; line-height: 1.45; }
+@media (max-width: 520px) { .card { padding: 26px; } .input-row { display: grid; } .input-row button { width: 100%; } }

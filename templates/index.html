@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YtDown</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <main class="card">
+      <div class="brand"><span>▶</span> YtDown</div>
+      <h1>Baixe seus vídeos</h1>
+      <p class="subtitle">Cole a URL e escolha a melhor qualidade disponível.</p>
+
+      <form id="url-form">
+        <label for="url">URL do vídeo</label>
+        <div class="input-row">
+          <input id="url" type="url" placeholder="https://..." required autocomplete="url">
+          <button id="search-button" type="submit">Buscar</button>
+        </div>
+      </form>
+
+      <section id="result" hidden>
+        <div class="video-info">
+          <img id="thumbnail" alt="Miniatura do vídeo">
+          <div><h2 id="title"></h2><p id="author"></p></div>
+        </div>
+        <label for="quality">Qualidade</label>
+        <select id="quality"></select>
+        <button id="download-button" class="download" type="button">Baixar MP4</button>
+      </section>
+      <p id="message" class="message" role="status"></p>
+      <p class="notice">Use somente para conteúdos que você possui ou tem autorização para baixar.</p>
+    </main>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
