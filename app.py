@@ -38,7 +38,7 @@ def safe_filename(value: str) -> str:
 def get_video(url: str) -> YouTube:
     if not url or not url.startswith(("https://", "http://")):
         raise ValueError("Informe uma URL válida começando com http:// ou https://.")
-    return YouTube(url)
+    return YouTube(url, client='WEB')
 
 
 @app.get("/")
@@ -78,9 +78,12 @@ def download():
     data = request.get_json(silent=True) or {}
     try:
         yt = get_video(str(data.get("url", "")).strip())
-        itag = int(data.get("itag"))
-        video_stream = yt.streams.get_by_itag(itag)
-        if not video_stream or not video_stream.only_video:
+        itag = data.get("itag")
+        if str(itag).lower() == "best":
+            video_stream = yt.streams.filter(only_video=True, file_extension="mp4").order_by("resolution").desc().first()
+        else:
+            video_stream = yt.streams.get_by_itag(int(itag))
+        if not video_stream or not video_stream.includes_video_track:
             raise ValueError("A qualidade selecionada não está disponível. Consulte o vídeo novamente.")
         audio_stream = yt.streams.filter(only_audio=True).order_by("abr").desc().first()
         if not audio_stream:
@@ -90,7 +93,7 @@ def download():
         work_dir = Path(tempfile.mkdtemp(prefix="ytdown-"))
         try:
             video_path = Path(video_stream.download(output_path=str(work_dir), filename="video.mp4"))
-            audio_path = Path(audio_stream.download(output_path=str(work_dir), filename="audio"))
+            audio_path = Path(audio_stream.download(output_path=str(work_dir), filename="audio.mp4"))
             output_path = Path(work_dir) / f"{safe_filename(yt.title)}.mp4"
 
             import imageio_ffmpeg

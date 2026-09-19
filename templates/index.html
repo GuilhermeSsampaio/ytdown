@@ -13,10 +13,10 @@
       <p class="subtitle">Cole a URL e escolha a melhor qualidade disponível.</p>
 
       <form id="url-form">
-        <label for="url">URL do vídeo</label>
-        <div class="input-row">
-          <input id="url" type="url" placeholder="https://..." required autocomplete="url">
-          <button id="search-button" type="submit">Buscar</button>
+        <label for="url">URLs dos vídeos (uma por linha)</label>
+        <div class="input-row" style="flex-direction: column; align-items: stretch; gap: 0.5rem;">
+          <textarea id="url" rows="3" placeholder="https://..." required style="resize: vertical; padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc;"></textarea>
+          <button id="search-button" type="submit">Processar / Baixar Lote</button>
         </div>
       </form>
 
