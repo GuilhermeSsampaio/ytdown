@@ -89,12 +89,12 @@ def download():
         if not audio_stream:
             raise ValueError("Não foi possível encontrar a faixa de áudio.")
 
-        # O diretório permanece até a resposta ser totalmente enviada ao navegador.
         work_dir = Path(tempfile.mkdtemp(prefix="ytdown-"))
         try:
             video_path = Path(video_stream.download(output_path=str(work_dir), filename="video.mp4"))
             audio_path = Path(audio_stream.download(output_path=str(work_dir), filename="audio.mp4"))
-            output_path = Path(work_dir) / f"{safe_filename(yt.title)}.mp4"
+            output_name = f"{safe_filename(yt.title)}.mp4"
+            output_path = Path(work_dir) / output_name
 
             import imageio_ffmpeg
 
@@ -107,18 +107,15 @@ def download():
             if result.returncode != 0 or not output_path.exists():
                 raise RuntimeError("Não foi possível unir vídeo e áudio. Tente outra qualidade.")
 
-            # A limpeza ocorre ao fechar a resposta, depois de o navegador recebê-la.
-            response = send_file(
-                output_path,
-                as_attachment=True,
-                download_name=output_path.name,
-                mimetype="video/mp4",
-            )
-            response.call_on_close(lambda: shutil.rmtree(work_dir, ignore_errors=True))
-            return response
-        except Exception:
+            downloads_dir = Path.home() / "Downloads" / "videos_baixados"
+            downloads_dir.mkdir(parents=True, exist_ok=True)
+            
+            final_path = downloads_dir / output_name
+            shutil.move(str(output_path), str(final_path))
+            
+            return jsonify({"success": True, "path": str(final_path), "title": yt.title})
+        finally:
             shutil.rmtree(work_dir, ignore_errors=True)
-            raise
     except Exception as exc:
         return jsonify({"error": str(exc)}), 400
 

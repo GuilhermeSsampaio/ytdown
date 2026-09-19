@@ -11,12 +11,10 @@ function busy(button, state, text) { button.disabled = state; if (text) button.t
 
 async function downloadUrl(url, itag = 'best') {
   const response = await fetch('/api/download', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({url: url, itag: itag}) });
-  if (!response.ok) { const data = await response.json(); throw new Error(data.error || 'Falha ao baixar.'); }
-  const blob = await response.blob();
-  const disposition = response.headers.get('content-disposition') || '';
-  const name = /filename="?([^";]+)"?/i.exec(disposition)?.[1] || 'video.mp4';
-  const link = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob), download: name});
-  link.click(); URL.revokeObjectURL(link.href);
+  const data = await response.json();
+  if (!response.ok) { throw new Error(data.error || 'Falha ao baixar.'); }
+  console.log('Salvo em:', data.path);
+  return data;
 }
 
 form.addEventListener('submit', async (event) => {
